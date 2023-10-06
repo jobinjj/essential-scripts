@@ -42,4 +42,64 @@ public static class Utils
     {
         return "<color=" + color + ">" + text + "</color>";
     }
+
+    public static void ResetCamera(this Camera camera)
+    {
+        camera.transform.localPosition = Vector3.zero;
+        camera.transform.localRotation = Quaternion.identity;
+    }
+
+    public static void ExecuteCoroutine(this MonoBehaviour behaviour, IEnumerator coroutine, Action OnComplete)
+    {
+        behaviour.StartCoroutine(ExecuteCoroutine(coroutine, OnComplete));
+    }
+    static IEnumerator ExecuteCoroutine(IEnumerator coroutine, Action OnComplete)
+    {
+        yield return coroutine;
+        OnComplete?.Invoke();
+    }
+
+    public static void DestroyIfNotNull<T>(this T objectToDestroy) where T : Component
+    {
+        if (objectToDestroy != null)
+        {
+            UnityEngine.Object.Destroy(objectToDestroy.gameObject);
+        }
+    }
+    public static void DestroyIfNotNull(this GameObject objectToDestroy)
+    {
+        if (objectToDestroy != null)
+        {
+            UnityEngine.Object.Destroy(objectToDestroy);
+        }
+    }
+
+    public static void DestroyAllItems<T>(this List<T> list, Action<T> IterateItem) where T : Component
+    {
+        List<T> tempList = new List<T>();
+        foreach (T item in list)
+        {
+            IterateItem?.Invoke(item);
+            tempList.Add(item);
+        }
+        foreach (T item in tempList)
+        {
+            list.Remove(item);
+            UnityEngine.Object.Destroy(item.gameObject);
+        }
+    }
+
+    public static void DestroyAllItems<T>(this List<T> list) where T : Component
+    {
+        List<T> tempList = new List<T>();
+        foreach (T item in list)
+        {
+            tempList.Add(item);
+        }
+        foreach (T item in tempList)
+        {
+            list.Remove(item);
+            UnityEngine.Object.Destroy(item.gameObject);
+        }
+    }
 }
