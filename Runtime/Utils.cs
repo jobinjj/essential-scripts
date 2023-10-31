@@ -102,4 +102,17 @@ public static class Utils
             UnityEngine.Object.Destroy(item.gameObject);
         }
     }
+
+    public static T Load<T>(this T so, string name) where T : ScriptableObject
+    {
+        if (so == null)
+        {
+            return Resources.Load<T>(name);
+        }
+        else
+        {
+            return so;
+        }
+        //so = Resources.Load<T>(name);
+    }
 }

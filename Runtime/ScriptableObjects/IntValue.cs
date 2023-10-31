@@ -18,4 +18,24 @@ public class IntValue : ScriptableObject
     {
         return value;
     }
+    public void Increment(int incrementValue)
+    {
+        value += incrementValue;
+        OnValueChanged?.Invoke(value);
+    }
+}
+public static class IntValueExtensions
+{
+    public static void Increment(this IntValue intValue, int incrementValue = 1)
+    {
+        int currentVal = intValue.GetValue();
+        currentVal += incrementValue;
+        intValue.SetValue(currentVal);
+    }
+    public static void Decrement(this IntValue intValue, int decrementValue = 1)
+    {
+        int currentVal = intValue.GetValue();
+        currentVal -= decrementValue;
+        intValue.SetValue(currentVal);
+    }
 }
